@@ -1,0 +1,154 @@
+//
+//  LoginViewController.swift
+//  sopt-37th-01Seminar
+//
+//  Created by 정윤아 on 10/11/25.
+//
+
+
+import UIKit
+
+class LoginViewController: UIViewController {
+    
+    // MARK: - Properties
+
+//    // 배달의민족 주조색 (하늘색 계열)
+//    let baeminSkyBlue = UIColor(red: 35/255, green: 200/255, blue: 195/255, alpha: 1.0)
+//    // 텍스트 필드 배경색 (약간 연한 회색)
+//    let textFieldBackgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
+//    // 텍스트 필드 테두리 색상 (더 연한 회색)
+//    let textFieldBorderColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1.0)
+//    
+    
+    //당근마켓 주황색
+    let Primary_Orange = UIColor(red: 255/255, green: 111/255, blue: 15/255, alpha: 1.0)
+    
+    // MARK: - UI Components
+    
+    lazy var titleLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 70, y: 163, width: 250, height: 50))
+        label.text = "동네라서 가능한 모든 것 \n당근에서 가까운 이웃과 함께해요"
+        label.numberOfLines = 2
+        label.font = UIFont(name: "Pretendard-Bold", size: 18)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    
+    
+    lazy var idTextField: UITextField = {
+        let textField = UITextField(frame: CGRect(x: 40, y: 276, width: 335, height: 52))
+        textField.placeholder = "아이디"
+        textField.borderStyle = .none // 기본 borderStyle 제거
+        textField.backgroundColor = UIColor(red: 221/255, green: 222/255, blue: 227/255, alpha: 1.0) // 연한 회색 배경
+        textField.layer.cornerRadius = 3
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0).cgColor // 더 연한 테두리
+        // 텍스트 필드 좌우 패딩 추가
+        textField.addLeftPadding()
+        textField.addRightPadding()
+        return textField
+    }()
+    
+    lazy var passwordTextField: UITextField = {
+        let textField = UITextField(frame: CGRect(x: 40, y: 335, width: 335, height: 52))
+        textField.placeholder = "비밀번호"
+        textField.borderStyle = .none // 기본 borderStyle 제거
+        textField.isSecureTextEntry = true
+        textField.backgroundColor = UIColor(red: 221/255, green: 222/255, blue: 227/255, alpha: 1.0) // 연한 회색 배경
+        textField.layer.cornerRadius = 3
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0).cgColor
+        // 텍스트 필드 좌우 패딩 추가
+        textField.addLeftPadding()
+        textField.addRightPadding()
+        return textField
+    }()
+    
+    lazy var loginButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 40, y: 422, width: 335, height: 57))
+        button.setTitle("로그인 하기", for: .normal)
+        button.backgroundColor = Primary_Orange
+//        (red: 35/255, green: 200/255, blue: 195/255, alpha: 1.0) // 배민 스카이 블루
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 6
+        
+        button.addTarget(self, action: #selector(loginButtonDidtap), for: .touchUpInside)
+        return button
+    }()
+    
+    
+ 
+    // MARK: - Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setUI()
+        setHierarchy()
+        setLayout()
+    }
+    
+    // MARK: - UI & Layout
+    
+    private func setUI() {
+        view.backgroundColor = .white
+    }
+    
+    private func setHierarchy() {
+        let components = [
+            titleLabel,
+            idTextField,
+            passwordTextField,
+            loginButton
+        ]
+        
+        components.forEach { view.addSubview($0) }
+    }
+    
+    private func setLayout() {
+
+    }
+    
+    //modal
+    private func presentTowlecomeVC(){
+        let vc = WelcomeViewController()
+        vc.name = idTextField.text //type 맞추기
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true)
+        
+    }
+    
+    //navigation
+    private func pushToWelcomeVC() {
+        let welcomeViewController = WelcomeViewController()
+        self.navigationController?.pushViewController(welcomeViewController, animated: true)
+    }
+    
+    @objc
+    private func loginButtonDidtap() {
+        presentTowlecomeVC()
+//        pushToWelcomeVC()
+    }
+}
+
+
+    //extension으로 패딩 사용
+extension UITextField{
+    func addLeftPadding(_ width: CGFloat = 23){
+        let paddingView = UIView(frame: CGRect(x:0,y:0, width: width, height: self.frame.height))
+        self.leftView = paddingView
+        self.leftViewMode = ViewMode.always
+    }
+    
+    func addRightPadding(_ width: CGFloat = 10){
+        let paddingView = UIView(frame: CGRect(x:0,y:0, width: width, height: self.frame.height))
+        self.rightView = paddingView
+        self.rightViewMode = ViewMode.always
+    }
+}
+
+
+#Preview{
+    LoginViewController()
+}
