@@ -26,6 +26,7 @@ final class WelcomeViewController: UIViewController {
         button.setTitle("메인으로", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 18)
+        button.layer.cornerRadius = 6
         return button
     }()
     
@@ -36,6 +37,7 @@ final class WelcomeViewController: UIViewController {
         button.setTitleColor(UIColor(red: 172/255, green: 176/255, blue: 185/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 18)
         button.addTarget(self, action: #selector(backToLoginButtonDidTap),for: .touchUpInside)
+        button.layer.cornerRadius = 6
         return button
     }()
     
@@ -77,4 +79,8 @@ final class WelcomeViewController: UIViewController {
         }
         
     }
+}
+
+#Preview{
+    WelcomeViewController()
 }
