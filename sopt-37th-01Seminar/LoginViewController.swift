@@ -7,6 +7,7 @@
 
 
     import UIKit
+    import SnapKit
 
     class LoginViewController: UIViewController {
         
@@ -28,7 +29,7 @@
         // MARK: - UI Components
         
         lazy var titleLabel: UILabel = {
-            let label = UILabel(frame: CGRect(x: 70, y: 163, width: 250, height: 50))
+            let label = UILabel() //제약 조건 없음
             label.text = "동네라서 가능한 모든 것 \n당근에서 가까운 이웃과 함께해요"
             label.numberOfLines = 2
             label.font = UIFont(name: "Pretendard-Bold", size: 18)
@@ -38,7 +39,7 @@
         
         
         lazy var idTextField: UITextField = {
-            let textField = UITextField(frame: CGRect(x: 40, y: 276, width: 335, height: 52))
+            let textField = UITextField()
             textField.placeholder = "아이디"
             textField.borderStyle = .none // 기본 borderStyle 제거
             textField.backgroundColor = UIColor(red: 221/255, green: 222/255, blue: 227/255, alpha: 1.0) // 연한 회색 배경
@@ -52,7 +53,7 @@
         }()
         
         lazy var passwordTextField: UITextField = {
-            let textField = UITextField(frame: CGRect(x: 40, y: 335, width: 335, height: 52))
+            let textField = UITextField()
             textField.placeholder = "비밀번호"
             textField.borderStyle = .none // 기본 borderStyle 제거
             textField.isSecureTextEntry = true
@@ -82,14 +83,14 @@
         
         @objc
         private func passwordSecureButtonTapped() {
-            passwordTextField.isSecureTextEntry.toggle()
+            passwordTextField.isSecureTextEntry.toggle() //비밀번호를 가리는지 아닌지 현재 상태와 반대로 적용
             
             let buttonTitle = passwordTextField.isSecureTextEntry ? "표시" : "숨김"
             passwordSecureButton.setTitle(buttonTitle, for: .normal)
         }
         
         lazy var loginButton: UIButton = {
-            let button = UIButton(frame: CGRect(x: 40, y: 422, width: 335, height: 57))
+            let button = UIButton()
             button.setTitle("로그인 하기", for: .normal)
             button.backgroundColor = Primary_Orange
             button.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 18)
@@ -131,19 +132,70 @@
         }
         
         private func setHierarchy() {
-            let components = [
+            [
                 titleLabel,
                 idTextField,
                 passwordTextField,
                 loginButton,
                 loadingIndicator
-            ]
+            ].forEach{self.view.addSubview($0)}
             
-            components.forEach { view.addSubview($0) }
         }
         
         private func setLayout() {
-            loadingIndicator.center = self.view.center
+            //            loadingIndicator.center = self.view.center
+            [titleLabel, idTextField, passwordTextField, loginButton].forEach{
+//                $0.translatesAutoresizingMaskIntoConstraints = false
+                self.view.addSubview($0)}
+        
+//            NSLayoutConstraint.activate([titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//                                         titleLabel.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 163)])
+//            
+//            NSLayoutConstraint.activate([loginButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 217),
+//                                         loginButton.heightAnchor.constraint(equalToConstant: 58),
+//                                         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//                                         loginButton.widthAnchor.constraint(equalToConstant: 338)])
+//            
+//            NSLayoutConstraint.activate([idTextField.centerXAnchor.constraint(equalTo : view.centerXAnchor),
+//                                         idTextField.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 277),
+//                                         idTextField.widthAnchor.constraint(equalToConstant: 335),
+//                                         idTextField.heightAnchor.constraint(equalToConstant: 52)])
+//            
+//            NSLayoutConstraint.activate([passwordTextField.centerXAnchor.constraint(equalTo : view.centerXAnchor),
+//                                         passwordTextField.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 335),
+//                                         passwordTextField.widthAnchor.constraint(equalToConstant: 335),
+//                                         passwordTextField.heightAnchor.constraint(equalToConstant: 52)])
+            
+            titleLabel.snp.makeConstraints{
+                $0.centerX.equalToSuperview()
+                $0.top.equalToSuperview().offset(163)
+                
+            }
+            
+            idTextField.snp.makeConstraints{
+                $0.top.equalTo(titleLabel.snp.bottom).offset(71)
+                $0.leading.equalToSuperview().offset(20)
+                $0.trailing.equalToSuperview().offset(-20)
+//                $0.horizontalEdges.equalToSuperview.inset(20) 위의 두 코드를 하나로 합친것
+                $0.height.equalTo(52)
+                
+            }
+            
+            passwordTextField.snp.makeConstraints{
+                $0.top.equalTo(idTextField.snp.bottom).offset(7)
+                $0.leading.equalToSuperview().offset(20)
+                $0.trailing.equalToSuperview().offset(-20)
+                $0.height.equalTo(52)
+                
+            }
+            
+            loginButton.snp.makeConstraints{
+                $0.top.equalTo(passwordTextField.snp.bottom).offset(35)
+                $0.leading.equalToSuperview().offset(20)
+                $0.trailing.equalToSuperview().offset(-20)
+                $0.height.equalTo(52)
+                
+            }
 
         }
         
@@ -210,5 +262,6 @@
 
 
     #Preview{
-        LoginViewController()
+        let vc = LoginViewController()
+        UINavigationController(rootViewController: vc)
     }

@@ -1,16 +1,7 @@
-//
-//  LoginViewController.swift
-//  sopt-37th-01Seminar
-//
-//  Created by 정윤아 on 10/11/25.
-//
-
 import Foundation
 import UIKit
 
-final class WelcomeViewController: UIViewController {
-    
-    var name: String? //optional 타입으로 선언
+final class WelcomeViewController_Closure: UIViewController {
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 112, y: 87, width: 150, height: 150))
@@ -18,7 +9,9 @@ final class WelcomeViewController: UIViewController {
         return imageView
     }()
     
-
+    var name: String? //optional 타입으로 선언
+    
+    var completionHandler: ((String) -> Void)? // 클로저타입의 프로퍼티 선언 (name 값을 다른 곳으로 전송하기 위해 전송)
     
     private let welcomeLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 140, y: 295, width: 95, height: 60))
@@ -39,13 +32,13 @@ final class WelcomeViewController: UIViewController {
         return button
     }()
     
-    private var backToLoginButton: UIButton = {
+    lazy var backToLoginButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 20, y: 498, width: 335, height: 58))
         button.backgroundColor = UIColor(red: 221/255, green: 222/255, blue: 227/255, alpha: 1)
         button.setTitle("다시 로그인", for: .normal)
         button.setTitleColor(UIColor(red: 172/255, green: 176/255, blue: 185/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont(name: "Pretendard-Bold", size: 18)
-        button.addTarget(self, action: #selector(backToLoginButtonDidTap),for: .touchUpInside)
+//        button.addTarget(self, action: #selector(backToLoginButtonDidTap),for: .touchUpInside)
         button.layer.cornerRadius = 6
         return button
     }()
@@ -57,12 +50,14 @@ final class WelcomeViewController: UIViewController {
         
         self.view.backgroundColor = .white
         setLayout()
-        
         bindID()
+        
+        backToLoginButton.addTarget(self, action: #selector(backToLoginButtonDidTap), for: .touchUpInside)
     }
     
     private func setLayout() {
         [logoImageView, welcomeLabel, goHomeButton, backToLoginButton].forEach {
+//            $0.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview($0)
         }
         
@@ -71,6 +66,9 @@ final class WelcomeViewController: UIViewController {
     @objc
     private func backToLoginButtonDidTap() {
     
+        let nickname = name ?? "알 수 없는 사용자"
+            
+        completionHandler?("\(nickname)님이 다시 로그인 버튼을 눌렀어요!")
         
         if self.navigationController == nil {
             self.dismiss(animated: true)
@@ -92,5 +90,6 @@ final class WelcomeViewController: UIViewController {
 }
 
 #Preview{
-    WelcomeViewController()
+    let vc = LoginViewController_Closure()
+    UINavigationController(rootViewController: vc)
 }
