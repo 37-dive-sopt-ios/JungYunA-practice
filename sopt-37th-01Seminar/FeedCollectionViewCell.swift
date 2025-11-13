@@ -20,6 +20,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     
     // MARK: - UI Components
     
+    
+    
     private let itemImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill

@@ -112,6 +112,7 @@ extension FeedViewController: FeedCollectionViewCellDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
+    // 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let horizontalInset: CGFloat = 20
         let width = (collectionView.frame.width - (itemSpacing + horizontalInset * 2)) / 2
